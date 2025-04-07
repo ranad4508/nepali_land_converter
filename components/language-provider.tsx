@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 
 type Language = "en" | "np";
 
@@ -58,81 +64,47 @@ const translations = {
     dhur: "Dhur",
     squareMeter: "Square Meter",
     squareFeet: "Square Feet",
+    feet: "Feet",
+    meter: "Meter",
     enterValue: "Enter value",
     footerText: "Designed and developed with ❤️ for Nepal",
     errorInvalidInput: "Please enter valid numbers",
     errorRequired: "This field is required",
     goToCalculator: "Go to Calculator",
     goToConverter: "Go to Converter",
-    heroPoint1: "Accurate Conversions",
-    heroPoint2: "Traditional & Modern Units",
-    heroPoint3: "Bilingual Interface",
-    calculatorBenefit1: "Calculate area from length and breadth",
-    calculatorBenefit2: "Support for feet and meter measurements",
-    calculatorBenefit3: "Convert to Ropani, Bigha, and other units",
-    calculatorBenefit4: "Precise calculations with decimal support",
-    converterBenefit1: "Convert between all Nepali land units",
-    converterBenefit2: "Support for international units (sq. ft, sq. m)",
-    converterBenefit3: "Instant conversion with accurate results",
-    converterBenefit4: "Handles complex unit relationships",
-    bilingualBenefit1: "Full support for English and Nepali",
-    bilingualBenefit2: "Native language terminology for all units",
-    bilingualBenefit3: "Easy language switching",
-    bilingualBenefit4: "Culturally appropriate measurements",
-    additionalFeature1: "Accurate Calculations",
-    additionalFeature2: "Secure & Private",
-    additionalFeature3: "Fast Performance",
-    additionalFeature4: "Regular Updates",
     cta: "Ready to simplify your land measurements?",
     tabAll: "All Features",
     tabCalculator: "Calculator",
     tabConverter: "Converter",
     tabOther: "Other Features",
-    capabilityCalculator: "Area Calculator",
-    capabilityCalculatorDesc:
-      "Calculate land area from length and breadth with support for multiple unit systems",
-    capabilityConverter: "Unit Converter",
-    capabilityConverterDesc:
-      "Convert between Ropani, Aana, Bigha, Katha, Dhur and international units",
-    capabilityUnits: "Multiple Units",
-    capabilityUnitsDesc:
-      "Support for all traditional Nepali land measurement units and international standards",
     landUnitsTitle: "Nepali Land Measurement Units",
     landUnitsSubtitle:
       "Understanding traditional Nepali land measurement systems",
-    ropaniDesc: "Traditional land unit used in hilly regions of Nepal",
-    ropaniEquivalent: "1 Ropani = 16 Aana = 5476 sq. ft",
-    aanaDesc: "Subdivision of Ropani used in the hill regions",
-    aanaEquivalent: "1 Aana = 4 Paisa = 342.25 sq. ft",
-    paisaDesc: "Smaller unit in the Ropani system",
-    paisaEquivalent: "1 Paisa = 4 Daam = 85.56 sq. ft",
-    daamDesc: "Smallest unit in the Ropani system",
-    daamEquivalent: "1 Daam = 21.39 sq. ft",
-    bighaDesc: "Traditional land unit used in Terai region of Nepal",
-    bighaEquivalent: "1 Bigha = 20 Katha = 72,900 sq. ft",
-    kathaDesc: "Subdivision of Bigha used in the Terai region",
-    kathaEquivalent: "1 Katha = 20 Dhur = 3,645 sq. ft",
-    dhurDesc: "Smallest unit in the Bigha system",
-    dhurEquivalent: "1 Dhur = 182.25 sq. ft",
     useCasesTitle: "Who Can Benefit",
     useCasesSubtitle: "Our calculator serves various sectors across Nepal",
-    useCaseRealEstate: "Real Estate Professionals",
-    useCaseRealEstateDesc:
-      "Quickly calculate and convert land measurements for property listings and transactions",
-    useCaseGovernment: "Government Officials",
-    useCaseGovernmentDesc:
-      "Accurately convert between traditional and modern units for land records and taxation",
-    useCaseBusiness: "Construction & Development",
-    useCaseBusinessDesc:
-      "Plan projects with precise land measurements in preferred units",
-    useCaseIndividual: "Individual Landowners",
-    useCaseIndividualDesc:
-      "Understand your property measurements in both traditional and modern terms",
-    mobileAppTitle: "Take It With You",
-    mobileAppDescription:
-      "Our land calculator is also available as a mobile app, allowing you to make calculations on the go without internet connection",
-    mobileAppButton: "Get Mobile App",
-    mobileAppFeature: "Works Offline",
+    history: "History",
+    load: "Load",
+    dimensions: "Dimensions",
+    outputUnit: "Output Unit",
+    areaUnit: "Output Unit",
+    savedCalculations: "Saved Calculations",
+    savedConversions: "Saved Conversions",
+    clearHistory: "Clear History",
+    noCalculations: "No calculations yet",
+    noConversions: "No conversions yet",
+    startCalculating: "Start calculating",
+    startConverting: "Start converting",
+    developedBy: "Developed for Nepal",
+    accuracyNote: "Results are approximate",
+    lengthTooltip: "Enter the length measurement",
+    breadthTooltip: "Enter the breadth measurement",
+    valueTooltip: "Enter the value to convert",
+    equivalentTo: "Equivalent to",
+    ropaniSystem: "Ropani System",
+    bighaSystem: "Bigha System",
+    conversionDetails: "Conversion Details",
+    convertedTo: "Converted to",
+    calculation: "Calculation",
   },
   np: {
     appName: "नेपाली जग्गा क्याल्कुलेटर",
@@ -182,82 +154,47 @@ const translations = {
     dhur: "धुर",
     squareMeter: "वर्ग मिटर",
     squareFeet: "वर्ग फिट",
+    feet: "फिट",
+    meter: "मिटर",
     enterValue: "मान प्रविष्ट गर्नुहोस्",
     footerText: "नेपालको लागि ❤️ का साथ डिजाइन र विकसित",
     errorInvalidInput: "कृपया मान्य संख्याहरू प्रविष्ट गर्नुहोस्",
     errorRequired: "यो फिल्ड आवश्यक छ",
     goToCalculator: "क्याल्कुलेटरमा जानुहोस्",
     goToConverter: "कन्भर्टरमा जानुहोस्",
-    heroPoint1: "सटीक रूपान्तरणहरू",
-    heroPoint2: "परम्परागत र आधुनिक एकाइहरू",
-    heroPoint3: "द्विभाषिक इन्टरफेस",
-    calculatorBenefit1: "लम्बाई र चौडाईबाट क्षेत्रफल गणना गर्नुहोस्",
-    calculatorBenefit2: "फिट र मिटर नापहरूको लागि समर्थन",
-    calculatorBenefit3: "रोपनी, बिघा, र अन्य एकाइहरूमा रूपान्तरण गर्नुहोस्",
-    calculatorBenefit4: "दशमलव समर्थनका साथ सटीक गणनाहरू",
-    converterBenefit1: "सबै नेपाली जग्गा एकाइहरू बीच रूपान्तरण गर्नुहोस्",
-    converterBenefit2:
-      "अन्तर्राष्ट्रिय एकाइहरूको लागि समर्थन (वर्ग फिट, वर्ग मिटर)",
-    converterBenefit3: "सटीक परिणामहरूसँग तत्काल रूपान्तरण",
-    converterBenefit4: "जटिल एकाइ सम्बन्धहरू सम्हाल्छ",
-    bilingualBenefit1: "अङ्ग्रेजी र नेपालीको लागि पूर्ण समर्थन",
-    bilingualBenefit2: "सबै एकाइहरूको लागि मातृभाषा शब्दावली",
-    bilingualBenefit3: "सजिलो भाषा स्विचिङ",
-    bilingualBenefit4: "सांस्कृतिक रूपमा उपयुक्त नापहरू",
-    additionalFeature1: "सटीक गणनाहरू",
-    additionalFeature2: "सुरक्षित र निजी",
-    additionalFeature3: "द्रुत प्रदर्शन",
-    additionalFeature4: "नियमित अपडेटहरू",
     cta: "तपाईंको जग्गा नापहरू सरल बनाउन तयार हुनुहुन्छ?",
     tabAll: "सबै विशेषताहरू",
     tabCalculator: "क्याल्कुलेटर",
     tabConverter: "कन्भर्टर",
     tabOther: "अन्य विशेषताहरू",
-    capabilityCalculator: "क्षेत्रफल क्याल्कुलेटर",
-    capabilityCalculatorDesc:
-      "विभिन्न एकाइ प्रणालीहरूको समर्थनका साथ लम्बाई र चौडाईबाट जग्गाको क्षेत्रफल गणना गर्नुहोस्",
-    capabilityConverter: "एकाइ कन्भर्टर",
-    capabilityConverterDesc:
-      "रोपनी, आना, बिघा, कट्ठा, धुर र अन्तर्राष्ट्रिय एकाइहरू बीच रूपान्तरण गर्नुहोस्",
-    capabilityUnits: "बहु एकाइहरू",
-    capabilityUnitsDesc:
-      "सबै परम्परागत नेपाली जग्गा नाप एकाइहरू र अन्तर्राष्ट्रिय मापदण्डहरूको लागि समर्थन",
     landUnitsTitle: "नेपाली जग्गा नाप एकाइहरू",
     landUnitsSubtitle: "परम्परागत नेपाली जग्गा नाप प्रणालीहरू बुझ्दै",
-    ropaniDesc: "नेपालको पहाडी क्षेत्रमा प्रयोग गरिने परम्परागत जग्गा एकाइ",
-    ropaniEquivalent: "१ रोपनी = १६ आना = ५४७६ वर्ग फिट",
-    aanaDesc: "पहाडी क्षेत्रमा प्रयोग गरिने रोपनीको उपविभाजन",
-    aanaEquivalent: "१ आना = ४ पैसा = ३४२.२५ वर्ग फिट",
-    paisaDesc: "रोपनी प्रणालीमा सानो एकाइ",
-    paisaEquivalent: "१ पैसा = ४ दाम = ८५.५६ वर्ग फिट",
-    daamDesc: "रोपनी प्रणालीमा सबैभन्दा सानो एकाइ",
-    daamEquivalent: "१ दाम = २१.३९ वर्ग फिट",
-    bighaDesc: "नेपालको तराई क्षेत्रमा प्रयोग गरिने परम्परागत जग्गा एकाइ",
-    bighaEquivalent: "१ बिघा = २० कट्ठा = ७२,९०० वर्ग फिट",
-    kathaDesc: "तराई क्षेत्रमा प्रयोग गरिने बिघाको उपविभाजन",
-    kathaEquivalent: "१ कट्ठा = २० धुर = ३,६४५ वर्ग फिट",
-    dhurDesc: "बिघा प्रणालीमा सबैभन्दा सानो एकाइ",
-    dhurEquivalent: "१ धुर = १८२.२५ वर्ग फिट",
     useCasesTitle: "कसले फाइदा लिन सक्छन्",
     useCasesSubtitle:
       "हाम्रो क्याल्कुलेटरले नेपालभरका विभिन्न क्षेत्रहरूलाई सेवा प्रदान गर्दछ",
-    useCaseRealEstate: "रियल इस्टेट पेशेवरहरू",
-    useCaseRealEstateDesc:
-      "सम्पत्ति सूचीहरू र लेनदेनका लागि जग्गा नापहरू छिटो गणना र रूपान्तरण गर्नुहोस्",
-    useCaseGovernment: "सरकारी अधिकारीहरू",
-    useCaseGovernmentDesc:
-      "जग्गा रेकर्ड र कराधानका लागि परम्परागत र आधुनिक एकाइहरू बीच सटीक रूपमा रूपान्तरण गर्नुहोस्",
-    useCaseBusiness: "निर्माण र विकास",
-    useCaseBusinessDesc:
-      "पसन्दिदा एकाइहरूमा सटीक जग्गा नापहरूसँग परियोजनाहरू योजना बनाउनुहोस्",
-    useCaseIndividual: "व्यक्तिगत जग्गा मालिकहरू",
-    useCaseIndividualDesc:
-      "तपाईंको सम्पत्ति नापहरू परम्परागत र आधुनिक दुवै शब्दहरूमा बुझ्नुहोस्",
-    mobileAppTitle: "आफूसँगै लैजानुहोस्",
-    mobileAppDescription:
-      "हाम्रो जग्गा क्याल्कुलेटर मोबाइल एपको रूपमा पनि उपलब्ध छ, जसले तपाईंलाई इन्टरनेट जडान बिना पनि चलिरहेको बेला गणनाहरू गर्न अनुमति दिन्छ",
-    mobileAppButton: "मोबाइल एप प्राप्त गर्नुहोस्",
-    mobileAppFeature: "अफलाइन काम गर्छ",
+    history: "इतिहास",
+    load: "लोड गर्नुहोस्",
+    dimensions: "आयामहरू",
+    outputUnit: "आउटपुट एकाइ",
+    areaUnit: "आउटपुट एकाइ",
+    savedCalculations: "सुरक्षित गणनाहरू",
+    savedConversions: "सुरक्षित रूपान्तरणहरू",
+    clearHistory: "इतिहास खाली गर्नुहोस्",
+    noCalculations: "अहिलेसम्म कुनै गणनाहरू छैनन्",
+    noConversions: "अहिलेसम्म कुनै रूपान्तरणहरू छैनन्",
+    startCalculating: "गणना सुरु गर्नुहोस्",
+    startConverting: "रूपान्तरण सुरु गर्नुहोस्",
+    developedBy: "नेपालको लागि विकसित",
+    accuracyNote: "परिणामहरू अनुमानित छन्",
+    lengthTooltip: "लम्बाई नाप प्रविष्ट गर्नुहोस्",
+    breadthTooltip: "चौडाई नाप प्रविष्ट गर्नुहोस्",
+    valueTooltip: "रूपान्तरण गर्न मान प्रविष्ट गर्नुहोस्",
+    equivalentTo: "बराबर",
+    ropaniSystem: "रोपनी प्रणाली",
+    bighaSystem: "बिघा प्रणाली",
+    conversionDetails: "रूपान्तरण विवरण",
+    convertedTo: "मा रूपान्तरित",
+    calculation: "गणना",
   },
 };
 
@@ -267,9 +204,25 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted to avoid hydration mismatch
+  useEffect(() => {
+    // Try to get saved language preference from localStorage
+    const savedLanguage = localStorage.getItem("preferredLanguage");
+    if (savedLanguage === "np") {
+      setLanguage("np");
+    }
+    setMounted(true);
+  }, []);
 
   const toggleLanguage = () => {
-    setLanguage(language === "en" ? "np" : "en");
+    const newLanguage = language === "en" ? "np" : "en";
+    setLanguage(newLanguage);
+    // Save preference to localStorage
+    if (mounted) {
+      localStorage.setItem("preferredLanguage", newLanguage);
+    }
   };
 
   const t = (key: string): string => {

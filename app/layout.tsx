@@ -8,10 +8,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "HisabKitab",
+  title: "Nepali Land Calculator",
   description:
     "Calculate and convert Nepali land measurements like Aana, Dhur, Katha, and more",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
@@ -22,12 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LanguageProvider>
             <Header />
             {children}
@@ -37,5 +31,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-import "./globals.css";

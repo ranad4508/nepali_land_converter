@@ -20,12 +20,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function FeatureSection() {
   const { t } = useLanguage();
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("all");
+  const [filteredFeatures, setFilteredFeatures] = useState<any[]>([]);
 
   const features = [
     {
@@ -73,6 +74,17 @@ export default function FeatureSection() {
       category: "other",
     },
   ];
+
+  // Update filtered features when activeTab changes
+  useEffect(() => {
+    if (activeTab === "all") {
+      setFilteredFeatures(features);
+    } else {
+      setFilteredFeatures(
+        features.filter((feature) => feature.category === activeTab)
+      );
+    }
+  }, [activeTab]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -185,7 +197,7 @@ export default function FeatureSection() {
   return (
     <section
       id="features"
-      className="py-20 bg-gradient-to-b from-slate-900 to-slate-950"
+      className="py-20 bg-gradient-to-b from-slate-900 to-slate-950 dark:from-slate-900 dark:to-slate-950"
     >
       <div className="container mx-auto px-4">
         <motion.div
@@ -250,73 +262,69 @@ export default function FeatureSection() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {features
-            .filter(
-              (feature) => activeTab === "all" || feature.category === activeTab
-            )
-            .map((feature, index) => (
+          {filteredFeatures.map((feature, index) => (
+            <motion.div
+              key={index}
+              className={`rounded-xl p-8 text-center flex flex-col items-center border border-slate-700 transition-all duration-300 ${
+                feature.bgColor
+              } ${
+                hoveredFeature === index
+                  ? "border-teal-500 shadow-lg shadow-teal-500/10"
+                  : "hover:border-teal-500/50"
+              }`}
+              variants={itemVariants}
+              onMouseEnter={() => setHoveredFeature(index)}
+              onMouseLeave={() => setHoveredFeature(null)}
+            >
               <motion.div
-                key={index}
-                className={`rounded-xl p-8 text-center flex flex-col items-center border border-slate-700 transition-all duration-300 ${
-                  feature.bgColor
-                } ${
-                  hoveredFeature === index
-                    ? "border-teal-500 shadow-lg shadow-teal-500/10"
-                    : "hover:border-teal-500/50"
-                }`}
-                variants={itemVariants}
-                onMouseEnter={() => setHoveredFeature(index)}
-                onMouseLeave={() => setHoveredFeature(null)}
+                className="mb-6 p-4 rounded-full bg-slate-800/60"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <motion.div
-                  className="mb-6 p-4 rounded-full bg-slate-800/60"
-                  whileHover={{ scale: 1.05, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  {feature.icon}
-                </motion.div>
-
-                <h3 className="text-2xl font-bold mb-3 text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-300 mb-6">{feature.description}</p>
-
-                <motion.div
-                  className="w-full mb-6 text-left"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                >
-                  {feature.benefits.map((benefit, i) => (
-                    <motion.div
-                      key={i}
-                      className="flex items-center mb-3 text-sm text-slate-300"
-                      initial={{ x: -10, opacity: 0 }}
-                      whileInView={{ x: 0, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.4 + i * 0.1 }}
-                    >
-                      <ChevronRight className="h-4 w-4 mr-2 text-teal-500" />
-                      {benefit}
-                    </motion.div>
-                  ))}
-                </motion.div>
-
-                {feature.link !== "/" && (
-                  <Link href={feature.link} className="mt-auto w-full">
-                    <Button
-                      variant="outline"
-                      className="w-full border-teal-600 text-teal-500 hover:text-white hover:bg-teal-600 transition-colors"
-                    >
-                      {feature.link === "/calculator"
-                        ? "Go to Calculator"
-                        : "Go to Converter"}
-                    </Button>
-                  </Link>
-                )}
+                {feature.icon}
               </motion.div>
-            ))}
+
+              <h3 className="text-2xl font-bold mb-3 text-white">
+                {feature.title}
+              </h3>
+              <p className="text-slate-300 mb-6">{feature.description}</p>
+
+              <motion.div
+                className="w-full mb-6 text-left"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+              >
+                {feature.benefits.map((benefit: any, i: any) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-center mb-3 text-sm text-slate-300"
+                    initial={{ x: -10, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                  >
+                    <ChevronRight className="h-4 w-4 mr-2 text-teal-500" />
+                    {benefit}
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {feature.link !== "/" && (
+                <Link href={feature.link} className="mt-auto w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full border-teal-600 text-teal-500 hover:text-white hover:bg-teal-600 transition-colors"
+                  >
+                    {feature.link === "/calculator"
+                      ? "Go to Calculator"
+                      : "Go to Converter"}
+                  </Button>
+                </Link>
+              )}
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Land Measurement Units Section */}
@@ -341,7 +349,7 @@ export default function FeatureSection() {
             {landUnits.map((unit, index) => (
               <motion.div
                 key={index}
-                className="bg-slate-800/40 border border-slate-700 rounded-lg p-5"
+                className="bg-slate-800/40 dark:bg-slate-800/40 border border-slate-700 rounded-lg p-5"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -387,7 +395,7 @@ export default function FeatureSection() {
             {useCases.map((useCase, index) => (
               <motion.div
                 key={index}
-                className="bg-slate-800/40 border border-slate-700 rounded-lg p-6 flex"
+                className="bg-slate-800/40 dark:bg-slate-800/40 border border-slate-700 rounded-lg p-6 flex"
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -410,7 +418,7 @@ export default function FeatureSection() {
 
         {/* Additional Features Bar */}
         <motion.div
-          className="mt-20 bg-slate-800/50 border border-slate-700 rounded-xl p-6"
+          className="mt-20 bg-slate-800/50 dark:bg-slate-800/50 border border-slate-700 rounded-xl p-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
